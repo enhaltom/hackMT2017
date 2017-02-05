@@ -3,7 +3,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Web.Mvc;
-using WebMatrix.WebData;
 using FeetOnDeskFriday.Models;
 
 namespace FeetOnDeskFriday.Filters
@@ -38,7 +37,7 @@ namespace FeetOnDeskFriday.Filters
                         }
                     }
 
-                    WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    MySql.Web.Security.MySqlWebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", createTables: true);
                 }
                 catch (Exception ex)
                 {

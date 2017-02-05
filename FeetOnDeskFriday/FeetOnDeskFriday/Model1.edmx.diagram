@@ -4,15 +4,8 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7330963072cf439cace88013de030605" Name="Diagram1">
-        <EntityTypeShape EntityType="FoDFmodel.my_aspnet_applications" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoDFmodel.my_aspnet_membership" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoDFmodel.my_aspnet_profiles" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoDFmodel.my_aspnet_roles" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoDFmodel.my_aspnet_sessioncleanup" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoDFmodel.my_aspnet_sessions" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoDFmodel.my_aspnet_users" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FoDFmodel.my_aspnet_usersinroles" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
+      <Diagram DiagramId="b1c4c79cbef445409365196243a48321" Name="Diagram1">
+        <EntityTypeShape EntityType="sql9157195Model.Picture" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

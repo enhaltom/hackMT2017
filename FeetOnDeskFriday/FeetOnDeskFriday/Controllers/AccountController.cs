@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
-using WebMatrix.WebData;
 using FeetOnDeskFriday.Filters;
+using FeetOnDeskFriday.Contexts;
 using FeetOnDeskFriday.Models;
 
 namespace FeetOnDeskFriday.Controllers
 {
-    [Authorize]
-    [InitializeSimpleMembership]
     public class AccountController : Controller
     {
         //
@@ -35,7 +32,9 @@ namespace FeetOnDeskFriday.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            var m = new MySql.Web.Security.MySqlSimpleMembershipProvider();
+
+            if (ModelState.IsValid && m.ValidateUser(model.UserName, model.Password))
             {
                 return RedirectToLocal(returnUrl);
             }
@@ -52,7 +51,8 @@ namespace FeetOnDeskFriday.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
+            var m = new MySql.Web.Security.MySqlSimpleMembershipProvider();
+          //  m.Logoff();
 
             return RedirectToAction("Index", "Home");
         }
@@ -79,8 +79,9 @@ namespace FeetOnDeskFriday.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
+                    var m = new MySql.Web.Security.MySqlSimpleMembershipProvider();
+                    m.CreateUserAndAccount(model.UserName, model.Password);
+                    m.ValidateUser(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
@@ -109,7 +110,8 @@ namespace FeetOnDeskFriday.Controllers
                 // Use a transaction to prevent the user from deleting their last login credential
                 using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
                 {
-                    bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+                    var m = new MySql.Web.Security.MySqlSimpleMembershipProvider();
+                    bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(m.GetUserId(User.Identity.Name));
                     if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
                     {
                         OAuthWebSecurity.DeleteAccount(provider, providerUserId);
@@ -132,7 +134,8 @@ namespace FeetOnDeskFriday.Controllers
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : "";
-            ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            var m = new MySql.Web.Security.MySqlSimpleMembershipProvider();
+            ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(m.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
@@ -144,7 +147,8 @@ namespace FeetOnDeskFriday.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Manage(LocalPasswordModel model)
         {
-            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            var m = new MySql.Web.Security.MySqlSimpleMembershipProvider();
+            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(m.GetUserId(User.Identity.Name));
             ViewBag.HasLocalPassword = hasLocalAccount;
             ViewBag.ReturnUrl = Url.Action("Manage");
             if (hasLocalAccount)
@@ -155,7 +159,7 @@ namespace FeetOnDeskFriday.Controllers
                     bool changePasswordSucceeded;
                     try
                     {
-                        changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+                        changePasswordSucceeded = m.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
                     }
                     catch (Exception)
                     {
@@ -186,7 +190,7 @@ namespace FeetOnDeskFriday.Controllers
                 {
                     try
                     {
-                        WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
+                        m.CreateAccount(User.Identity.Name, model.NewPassword);
                         return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
                     }
                     catch (Exception)
@@ -323,8 +327,8 @@ namespace FeetOnDeskFriday.Controllers
                     ProviderUserId = account.ProviderUserId,
                 });
             }
-
-            ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            var m = new MySql.Web.Security.MySqlSimpleMembershipProvider();
+            ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(m.GetUserId(User.Identity.Name));
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
         }
 
