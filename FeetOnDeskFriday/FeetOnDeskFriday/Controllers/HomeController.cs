@@ -10,22 +10,32 @@ namespace FeetOnDeskFriday.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(int userId)
+        public ActionResult Index(int userId=0)
         {
             ViewBag.Message = "Main Feed";
             ViewBag.userId = userId;
             using (var db = new Context())
             {
-                ViewBag.Pictures = db.Pictures
-                    .Where(p => p.UserId == userId)
-                    .OrderByDescending(p => p.Time)
-                    .ToList();
+                if (userId > 0)
+                {
+                    ViewBag.Pictures = db.Pictures
+                        .Where(p => p.UserId == userId)
+                        .OrderByDescending(p => p.Time)
+                        .ToList();
+                }
+               
+                else
+                {
+                    ViewBag.Pictures = db.Pictures
+                   .OrderByDescending(p => p.Time)
+                   .ToList();
+                }
             }
 
             return View();
         }
 
-        //public ActionResult Index()
+        //public ActionResult Public()
         //{
         //    ViewBag.Message = "Main Feed";
 

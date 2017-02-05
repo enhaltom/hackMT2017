@@ -4,25 +4,25 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FeetOnDeskFriday.Contexts;
+using System.Web.Http;
 
 namespace FeetOnDeskFriday.Controllers
 {
-    public class PictureController : Controller
+    public class PictureController : ApiController
     {
         //
         // GET: /Picture/
 
-        [HttpPost]
         public void Post(PostPictureModel data)
         {
-            //string url = Request["Url"];
-            //string comment = Request["Comment"];
+            
             using (var db = new Context())
             {
                 var picture = new Picture();
                 picture.UserId = data.UserId;
                 picture.URL = data.URL;
                 picture.Comment = data.Comment;
+                picture.Time = DateTime.Now;
                 db.Pictures.Add(picture);
                 db.SaveChanges();
             }
