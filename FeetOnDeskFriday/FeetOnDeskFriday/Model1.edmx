@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="sql9157195Model.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="sql9157195Model.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="sql9157195ModelStoreContainer">
           <EntitySet Name="Pictures" EntityType="sql9157195Model.Store.Pictures" store:Type="Tables" Schema="sql9157195" />
         </EntityContainer>
@@ -14,13 +14,15 @@
           </Key>
           <Property Name="PictureId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="URL" Type="varchar" Nullable="false" MaxLength="500" />
+          <Property Name="Time" Type="timestamp" Nullable="false" />
+          <Property Name="Comment" Type="varchar" MaxLength="140" />
+          <Property Name="UserId" Type="int" Nullable="false" />
         </EntityType>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="sql9157195Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="sql9157195Entities" p1:LazyLoadingEnabled="true">
+        <EntityContainer Name="sql9157195Entities1" p1:LazyLoadingEnabled="true">
           <EntitySet Name="Pictures" EntityType="sql9157195Model.Picture" />
         </EntityContainer>
         <EntityType Name="Picture">
@@ -29,18 +31,24 @@
           </Key>
           <Property Name="PictureId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="URL" Type="String" Nullable="false" MaxLength="500" Unicode="false" FixedLength="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Comment" Type="String" MaxLength="140" Unicode="false" FixedLength="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="sql9157195ModelStoreContainer" CdmEntityContainer="sql9157195Entities">
+        <EntityContainerMapping StorageEntityContainer="sql9157195ModelStoreContainer" CdmEntityContainer="sql9157195Entities1">
           <EntitySetMapping Name="Pictures">
             <EntityTypeMapping TypeName="sql9157195Model.Picture">
               <MappingFragment StoreEntitySet="Pictures">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="PictureId" ColumnName="PictureId" />
                 <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -16,5 +16,8 @@ namespace FeetOnDeskFriday
     {
         public int PictureId { get; set; }
         public string URL { get; set; }
+        public System.DateTime Time { get; set; }
+        public string Comment { get; set; }
+        public int UserId { get; set; }
     }
 }

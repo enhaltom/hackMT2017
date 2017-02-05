@@ -13,10 +13,10 @@ namespace FeetOnDeskFriday
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class sql9157195Entities : DbContext
+    public partial class sql9157195Entities1 : DbContext
     {
-        public sql9157195Entities()
-            : base("name=sql9157195Entities")
+        public sql9157195Entities1()
+            : base("name=sql9157195Entities1")
         {
         }
     

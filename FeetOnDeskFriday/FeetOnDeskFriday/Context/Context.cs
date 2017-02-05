@@ -8,7 +8,7 @@ using System.Web.Security;
 
 namespace FeetOnDeskFriday.Contexts
 {
-    public class Context : sql9157195Entities
+    public class Context : sql9157195Entities1
     {
         public Context() : base() { }
     }

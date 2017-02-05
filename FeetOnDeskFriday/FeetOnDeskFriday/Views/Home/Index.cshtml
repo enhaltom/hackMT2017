@@ -10,21 +10,57 @@
 
 </div>
 
-<div class="containet">
+<script>
+    function submitForm() {
+        var formData = {};
+        $('#postPictureForm input[type="text"]').each(function () {
+            formData[$(this).attr('name')] = $(this).val();
+        });
+        
+        $.ajax({
+            url: 'Picture',
+            method: 'POST',
+            data: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function(response) {
+            console.log('Done!');
+            console.log(response);
+        });
+    }
+</script>
+
+<div id="postPictureForm">
+   <div class="form-group">
+       URL
+       <input type="text" name="URL" class="form-control" />
+       Comment
+       <input type="text" name="Comment" class="form-control" />
+       <br />
+       <input type="text" name="UserId" value="@ViewBag.userId" style="display:none;" />
+       <button class="btn btn-primary" onclick="submitForm()">Post</button>
+   </div>
+</div>
+
+<div class="container">
+    @foreach (var picture in ViewBag.Pictures)
+    {
     <!-- Example row of columns -->
     <div class="row">
         <div class="col-md-2 portfolio-item">
         </div>
         <div class="col-md-8 portfolio-item">
-            <p><a href="~/Home/Contact">contact</a> </p>
-            <img src="http://watermarked.cutcaster.com/cutcaster-photo-100511130-Businessman-sleeping-at-desk-with-feet-up.jpg" width='100%' alt="" />
-            <p>Some very very very very looooooooong comment !!!!!!!!!!!!!!!!</p>
+            <p>Username</p>
+            <img src="@picture.URL" width='100%' alt="" />
+            <p>@picture.Comment</p>
         </div>
         <div class="col-md-2 portfolio-item">
         </div>
     </div>
+    }
 
-    <div class="row">
+@*    <div class="row">
         <div class="col-md-2 portfolio-item">
         </div>
         <div class="col-md-8 portfolio-item">
@@ -34,5 +70,5 @@
         </div>
         <div class="col-md-2 portfolio-item">
         </div>
-    </div>
+    </div>*@
 </div>
